@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resume Editor</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="auth-screen">
+  <div class="auth-card">
+    <h1>Resume Editor</h1>
+    <p class="muted">Write a LaTeX-quality resume, edited like a document.</p>
+    <input id="auth-email" type="email" placeholder="Email">
+    <input id="auth-password" type="password" placeholder="Password (min 6 chars)">
+    <div class="row">
+      <button id="login-btn" class="btn btn-default">Log in</button>
+      <button id="register-btn" class="btn btn-outline">Register</button>
+    </div>
+    <p id="auth-error" class="error"></p>
+  </div>
+</div>
+
+<div id="app" class="hidden">
+  <aside id="sidebar">
+    <div class="side-head">
+      <h2>Resumes</h2>
+      <button id="new-btn" class="btn btn-ghost" title="New resume">+</button>
+    </div>
+    <ul id="resume-list"></ul>
+    <div class="side-foot">
+      <span id="user-email" class="muted"></span>
+      <button id="logout-btn" class="btn btn-link">Log out</button>
+    </div>
+  </aside>
+
+  <main>
+    <div class="toolbar">
+      <input id="title" placeholder="Resume title">
+      <div class="tabs">
+        <button id="tab-doc" class="tab active">Document</button>
+        <button id="tab-form" class="tab">Form</button>
+        <button id="tab-raw" class="tab">Raw LaTeX</button>
+      </div>
+      <button id="save-btn" class="btn btn-outline">Save</button>
+      <button id="compile-btn" class="btn btn-default">Compile</button>
+      <button id="download-btn" class="btn btn-outline" disabled>Download PDF</button>
+      <button id="download-tex-btn" class="btn btn-outline">Download .tex</button>
+    </div>
+
+    <div id="doc-mode">
+      <div class="editbar">
+        <button class="btn btn-ghost" onclick="exec('bold')" title="Bold"><b>B</b></button>
+        <button class="btn btn-ghost" onclick="exec('italic')" title="Italic"><i>I</i></button>
+        <button class="btn btn-ghost" onclick="exec('insertUnorderedList')" title="Bullet list">• List</button>
+      </div>
+      <div class="page doc" id="doc-editor" contenteditable="true" spellcheck="false"></div>
+    </div>
+
+    <div id="form-mode" class="hidden">
+      <div class="page">
+        <h3>Personal</h3>
+        <div class="grid2">
+          <label>Full name<input data-f="name"></label>
+          <label>Phone<input data-f="phone"></label>
+          <label>Email<input data-f="email"></label>
+          <label>Website (no https://)<input data-f="website"></label>
+          <label>LinkedIn (no https://)<input data-f="linkedin"></label>
+          <label>GitHub (no https://)<input data-f="github"></label>
+        </div>
+        <label>Summary<textarea data-f="summary" rows="2"></textarea></label>
+
+        <h3>Education</h3>
+        <div id="edu-list"></div>
+        <button class="btn btn-ghost" onclick="addEdu()">+ Add school</button>
+
+        <h3>Experience</h3>
+        <div id="exp-list"></div>
+        <button class="btn btn-ghost" onclick="addExp()">+ Add job</button>
+
+        <h3>Projects</h3>
+        <div id="proj-list"></div>
+        <button class="btn btn-ghost" onclick="addProj()">+ Add project</button>
+
+        <h3>Technical Skills</h3>
+        <div id="skills-list"></div>
+        <button class="btn btn-ghost" onclick="addSkill()">+ Add skill category</button>
+
+        <p class="muted" style="margin-top:24px">The form is a starting point. When you switch to <b>Document</b>, this form is used to build the editable document (overwriting any manual document edits).</p>
+        <button class="btn btn-default" onclick="formToDoc()">Build document from form</button>
+      </div>
+    </div>
+
+    <div id="raw-mode" class="hidden">
+      <div class="editbar">
+        <button id="import-latex-btn" class="btn btn-outline">Import into Document / Form</button>
+        <button id="import-latex-ai-btn" class="btn btn-outline">AI Import (Gemini free key)</button>
+        <span class="muted" style="align-self:center">Best-effort parse of any LaTeX; AI import understands other templates.</span>
+      </div>
+      <textarea id="raw-editor" placeholder="Full LaTeX source..."></textarea>
+    </div>
+  </main>
+
+  <section id="preview-pane">
+    <div id="preview-head">
+      <span>PDF Preview</span>
+      <span id="compile-status"></span>
+    </div>
+    <iframe id="pdf-frame"></iframe>
+  </section>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
