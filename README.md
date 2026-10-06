@@ -1,6 +1,6 @@
 # Resume Editor
 
-A web app for writing LaTeX-quality resumes without fighting LaTeX syntax.
+A web app for writing LaTeX resumes without LaTeX syntax.
 Edit in a document-style form editor, or drop into raw LaTeX — both compile to
 the same professional PDF (Jake's Resume template built in).
 
@@ -48,12 +48,3 @@ backend/
   static/        Frontend (index.html, app.js, style.css)
 data/            SQLite database (created at runtime)
 ```
-
-## Deploying later
-
-- Swap the SQLite URL in `backend/db.py` for Postgres
-  (`postgresql+psycopg2://...`) without touching the rest of the code.
-- Set `RESUME_EDITOR_SECRET` env var to a fixed secret so logins survive
-  restarts.
-- For production LaTeX compilation, run the backend in Docker with TeX Live
-  installed (or point `find_pdflatex()` at your compiler).
